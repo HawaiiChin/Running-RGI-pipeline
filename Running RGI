@@ -38,4 +38,15 @@ def run_rgi(faa):
 def build_final_table(partials):
     import pandas as pd
     oname = 'rgi.amps.tsv.gz'
-    partials = [pd.read_table(p, 
+    partials = [pd.read_table(p, index_col =0, comment = '#') for p in partials]
+    full = pd.concat(partials)
+    full.to_csv(oname, sep='\t')
+    return oname
+
+splits_metag = split_seq_file('wastewater.faa.gz', 'metag')
+
+partials = []
+for faa in itertools.chain.from_iterable([bvalue(splits_prog), bvalue(splits_metag)]):
+    partials.append(run_rgi(faa))
+
+build_final_table(partials)
