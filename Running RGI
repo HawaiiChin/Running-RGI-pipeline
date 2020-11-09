@@ -29,7 +29,8 @@ def run_rgi(faa):
     from shutil import move
     rgi_o_dir = faa.replace(' .faa.gz', '.rgi.out')
     jug_execute.f(['rgi', 'dna', '--fasta', faa, '--out', rgi_o_dir])
-    oname = faa.replace('faa.gz', 'rgi.tsv.gz'), oname)
+    oname = faa.replace('faa.gz', 'rgi.tsv.gz')
+    move(path.join(rgi_o_dir, 'rgi.out.prediction.gz'), oname)
     rmdir(rgi_o_dir)
     unlink(faa)
     return oname
