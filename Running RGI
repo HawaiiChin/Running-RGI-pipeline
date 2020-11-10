@@ -47,7 +47,7 @@ def build_final_table(partials):
 splits_metag = split_seq_file('wastewater.faa.gz', 'metag')
 
 partials = []
-for faa in itertools.chain.from_iterable([ bvalue(splits_metag)]):
+for faa in (bvalue(splits_metag)):
     partials.append(run_rgi(faa))
 
 build_final_table(partials)
