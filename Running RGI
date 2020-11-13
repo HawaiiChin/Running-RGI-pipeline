@@ -6,7 +6,7 @@ MAX_SEQ_CHUNKS = 1_000_000
 
 @TaskGenerator
 def split_seq_file(faa, tag):
-    from rgi.fasta import fasta_iter
+    from fasta import fasta_iter
     import gzip
     cur_n = MAX_SEQ_CHUNKS + 1
     ix = 0
@@ -27,8 +27,9 @@ def split_seq_file(faa, tag):
 def run_rgi(faa):
     from os import path, unlink, rmdir
     from shutil import move
+    import subprocess
     rgi_o_dir = faa.replace(' .faa.gz', '.rgi.out')
-    jug_execute.f(['rgi', 'dna', '--fasta', faa, '--out', rgi_o_dir])
+    subprocess.check_call(['rgi', 'dna', '--fasta', faa, '--out', rgi_o_dir])
     oname = faa.replace('faa.gz', 'rgi.tsv.gz')
     move(path.join(rgi_o_dir, 'rgi.out.prediction.gz'), oname)
     rmdir(rgi_o_dir)
