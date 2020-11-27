@@ -2,7 +2,7 @@ from jug import TaskGenerator, bvalue
 from jug.utils import jug_execute
 import itertools
 
-MAX_SEQ_CHUNKS = 1_000_000
+MAX_SEQ_CHUNKS = 1_000
 
 @TaskGenerator
 def split_seq_file(faa, tag):
@@ -37,7 +37,7 @@ def run_rgi(faa):
     return oname
     
 @TaskGenerator
-def build_final_table(partials):
+def concat_partials(partials, oname):
     import pandas as pd
     oname = 'rgi.amps.tsv.gz'
     partials = [pd.read_table(p, index_col =0, comment = '#') for p in partials]
@@ -45,10 +45,10 @@ def build_final_table(partials):
     full.to_csv(oname, sep='\t')
     return oname
 
-splits_metag = split_seq_file('wastewater.faa.gz', 'metag')
+splits = split_seq_file('wastewater.faa.gz')
 
 partials = []
-for faa in (bvalue(splits_metag)):
+for faa in (bvalue(splits)):
     partials.append(run_rgi(faa))
 
-build_final_table(partials)
+concat_partials(partials,'outputs/rgi.full.tsv.gz')
