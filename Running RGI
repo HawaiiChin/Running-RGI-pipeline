@@ -6,8 +6,10 @@ MAX_SEQ_CHUNKS = 1_000
 
 @TaskGenerator
 def split_seq_file(faa, tag):
+    from os import makedirs,path
     from fasta import fasta_iter
     import gzip
+    makedirs('partials', exist_ok = True)
     cur_n = MAX_SEQ_CHUNKS + 1
     ix = 0
     out = None
