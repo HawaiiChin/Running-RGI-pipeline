@@ -28,15 +28,30 @@ def split_seq_file(faa, tag):
    
 @TaskGenerator
 def run_rgi(faa):
-    from os import path, unlink, rmdir
-    from shutil import move
+    from os import makedirs
+    import shutil 
     import subprocess
-    rgi_o_dir = faa.replace(' .faa.gz', '.rgi.out')
-    subprocess.check_call(['rgi', 'dna', '--fasta', faa, '--out', rgi_o_dir])
-    oname = faa.replace('faa.gz', 'rgi.tsv.gz')
-    move(path.join(rgi_o_dir, 'rgi.out.prediction.gz'), oname)
-    rmdir(rgi_o_dir)
-    unlink(faa)
+    import tempfile
+    oname = faa.replace('partials', 'partials.rgi').replace('faa.gz', 'rgi.tsv')
+    with temp.TemporaryDirectory as tdir:
+        if faa.endswith('.gz'):
+            import gzip
+            faa_expanded = tdir + '/data.faa.gz'
+            with gzip.open(faa, 'rb') as ifile, \
+                open(faa_expanded, 'wb') as ofile:
+                while True:
+                    block = ifile.read(8192)
+                    if not block:
+                        break
+                    ofile.write(block)
+            faa = faa.expanded
+        tmp_oname = tdir + '/RGI_output'
+        subprocess.check_call([
+            'rgi', 'main',
+            '-t', 'protein',
+            '-i', faa, 
+            '-o', tmp_oname])
+        shutil.copy(tmp_oname+ '.txt', oname)
     return oname
     
 @TaskGenerator
