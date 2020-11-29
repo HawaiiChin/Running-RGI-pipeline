@@ -11,6 +11,7 @@ def split_seq_file(faa, tag):
     import gzip
     makedirs('partials', exist_ok = True)
     cur_n = MAX_SEQ_CHUNKS + 1
+    basename = path.basename(faa)
     ix = 0
     out = None
     partials = []
