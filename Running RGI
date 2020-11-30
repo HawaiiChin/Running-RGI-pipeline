@@ -32,7 +32,7 @@ def run_rgi(faa):
     import shutil 
     import subprocess
     import tempfile
-    makedirs('partials.rgi', exist_ok = T)
+    makedirs('partials.rgi', exist_ok = True)
     oname = faa.replace('partials', 'partials.rgi').replace('faa.gz', 'rgi.tsv')
     with temp.TemporaryDirectory as tdir:
         if faa.endswith('.gz'):
@@ -63,7 +63,7 @@ def concat_partials(partials, oname):
     full.to_csv(oname, sep='\t')
     return oname
 
-splits = split_seq_file(data/'wastewater.faa.gz')
+splits = split_seq_file(data/'GMGC.wastewater.fna.gz')
 
 partials = []
 for faa in (bvalue(splits)):
