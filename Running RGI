@@ -34,7 +34,7 @@ def run_rgi(faa):
     import tempfile
     makedirs('partials.rgi', exist_ok = True)
     oname = faa.replace('partials', 'partials.rgi').replace('faa.gz', 'rgi.tsv')
-    with temp.TemporaryDirectory as tdir:
+    with tempfile.TemporaryDirectory as tdir:
         if faa.endswith('.gz'):
             import gzip
             faa_expanded = tdir + '/data.faa.gz'
