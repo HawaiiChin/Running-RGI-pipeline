@@ -1,1 +1,9 @@
 conda install biopython
+from Bio import SeqIO
+
+record_iter = SeqIO.parse(open("file"), fasta)
+for i, seq in enumerate(seq_iterator(record_iter, 1_000)):
+    filename = "group_%i.fasta" % (i + 1)
+    with open(filename, "w") as handle:
+        count = SeqIO.write(seq, handle, "fasta")
+    print("Wrote %i records to %s" % (count, filename))
