@@ -17,7 +17,7 @@ def split_seq_file(faa):
     partials = []
     for h, seq in fasta_iter(faa):
         if cur_n >= MAX_SEQ_CHUNKS:
-            partials.append(f'rgi.partials/{tag}.block_{ix:04}.faa.gz')
+            partials.append(f'partials/{basename}_block_{ix:04}.faa.gz')
             out = gzip.open(partials[-1], compresslevel = 1, mode = 'wt')
             cur_n = 0
             ix += 1
