@@ -63,7 +63,7 @@ def concat_partials(partials, oname):
     full.to_csv(oname, sep='\t')
     return oname
 
-splits = split_seq_file('GMGC.wastewater.fna.gz')
+splits = split_seq_file('data\GMGC.wastewater.fna.gz')
 
 partials = []
 for faa in (bvalue(splits)):
